@@ -92,11 +92,6 @@
    typedef enum {
 	   LIS_TipoCabeca,
 	   LIS_TipoElemento
-	   /*
-	   *
-	   *
-	   *
-	   */
    } LIS_TipoEspaco;
 #endif
 
@@ -519,6 +514,12 @@
 
    } /* Fim função: LIS  &Procurar elemento contendo valor */
 
+/* Obter tamanho da lista */
+LIS_tpCondRet LIS_ObterTamanho( LIS_tppLista pLista,int * num)
+   {
+		*num = pLista->numElem;
+		return LIS_CondRetOK ;
+   } /* Fim função: LIS  &Obter referência para o tamanho da lista*/
 
 /*****  Código das funções encapsuladas no módulo  *****/
 
@@ -662,7 +663,7 @@ void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao)
 
 		case DeturpaEliminaCorr :
 		{
-			LIS_ExcluirElemento(Lista);
+			free(Lista->pElemCorr);
 			break;
 		}
 
@@ -743,6 +744,56 @@ void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao)
 			break;
 	} /* Fim Switch Deturpacao */
 }
+#endif
+
+#ifdef _DEBUG
+LIS_tpCondRet verificaLista (void* pLista, int* qtd)
+{
+	int i, num, cont = 0;
+	void* aux;
+	LIS_tppLista listaAux;
+	CED_MarcarTodosEspacosInativos(); // passo para verificar vazamento de memoria
+	// percorre a estrutura do inicio ao fim
+	// como eu vou testar cada deturpação?? 
+	// por exemplo, como vou saber que o corrente foi liberado, ou como que o valor aponta para um lixo.. etc
+	/*
+	Tivemos a ideia de guardar o corrente numa variavel global antes da deturpacao, assim poderiamos verificar o valor do corrente depois da deturpação
+	e checar se foi alterado...
+	*
+	*
+	*
+	*/
+
+
+}
+#endif
+
+#ifdef _DEBUG
+
+	LIS_tpCondRet verificaElemento (void * ppElem, int* f)
+	{
+		struct tagElemLista * pElem;
+		int falha = 0;
+		pElem = (tpElemLista*)(ppElem);
+
+		// marca elemento ativo
+		CED_MarcarEspacoAtivo(pElem);
+
+		// verifica tipo de dado do elemento
+		if ( TST_CompararInt( LIS_TipoElemento ,
+			CED_ObterTipoEspaco( pElem) ,
+			"Tipo do espaço de dados não é elemento da lista." ) != TST_CondRetOK )
+		{
+			//conta
+			falha++;
+		}
+			// marca o campo valor como ativo
+			CED_MarcarEspacoAtivo(pElem->pValor);
+
+		*f = falha;
+		return LIS_CondRetOK;
+	}
+
 #endif
 
 /********** Fim do módulo de implementação: LIS  Lista duplamente encadeada **********/

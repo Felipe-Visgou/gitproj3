@@ -377,13 +377,17 @@ typedef struct LIS_tagLista * LIS_tppLista ;
                                     void * pValor        ) ;
 
 
+   LIS_tpCondRet LIS_ObterTamanho( LIS_tppLista pLista,int * num);
+
+
 #ifdef _DEBUG
 
     LIS_tpCondRet LIS_DesencadeiaSemFree( LIS_tppLista pLista );
 
 	void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao);
 
-	// verifica lista....
+	LIS_tpCondRet verificaLista (LIS_tppLista pLista, int* qtd);
+
 #endif
 
 #undef LISTA_EXT

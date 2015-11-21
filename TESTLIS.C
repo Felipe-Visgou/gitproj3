@@ -410,7 +410,7 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
 		 {
 			 numLidos = LER_LerParametros( "ii" ,&inxLista, &falhasEsperadas) ;
 
-			if ( numLidos != 1 )
+			if ( numLidos != 2 )
             {
                return TST_CondRetParm ;
             } /* if */

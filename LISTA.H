@@ -386,7 +386,8 @@ typedef struct LIS_tagLista * LIS_tppLista ;
 
 	void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao);
 
-	LIS_tpCondRet verificaLista (LIS_tppLista pLista, int* qtd);
+	void verificaLista (LIS_tppLista pLista, int* qtd);
+
 
 #endif
 

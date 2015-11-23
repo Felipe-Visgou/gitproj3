@@ -103,14 +103,13 @@
    static tpElemLista * CriarElemento( LIS_tppLista pLista ,
                                        void *       pValor  ) ;
 
-   void clonaElemento(tpElemLista * Origem, tpElemLista * Destino);
+   LIS_tpCondRet verificaElemento (void * ppElem, int* f);
 
    static void LimparCabeca( LIS_tppLista pLista ) ;
 
 
 /*********************/
 
-	  tpElemLista *Corrente;
 /*****  Código das funções exportadas pelo módulo  *****/
 
 /***************************************************************************
@@ -662,8 +661,6 @@ void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao)
 
 		case DeturpaEliminaCorr :
 		{
-			//Corrente = Lista->pElemCorr;
-			clonaElemento(Lista->pElemCorr, Corrente);
 			Lista->pElemCorr->pAnt->pProx = lixo;
 			Lista->pElemCorr->pProx->pAnt = lixo;
 			LiberarElemento(Lista, Lista->pElemCorr);
@@ -674,8 +671,7 @@ void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao)
 
 		case DeturpaPtProxNulo :
 		{
-			//Corrente = Lista->pElemCorr;
-			clonaElemento(Lista->pElemCorr, Corrente);
+
 			Lista->pElemCorr->pProx = NULL;
 			break;
 			
@@ -686,8 +682,6 @@ void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao)
 		case DeturpaPtAntNulo :
 			{
 		
-			//Corrente = Lista->pElemCorr;
-			clonaElemento(Lista->pElemCorr, Corrente);
 			Lista->pElemCorr->pAnt = NULL;
 			break;
 
@@ -713,8 +707,6 @@ void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao)
 
 		case DeturpaPtConteudoCorrNulo :
 		{
-			//Corrente = Lista->pElemCorr;
-			clonaElemento(Lista->pElemCorr, Corrente);
 			Lista->pElemCorr->pValor = NULL;
 			break;
 		}
@@ -723,8 +715,6 @@ void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao)
 
 		case DeturpaTipoCorr :
 		{
-			//Corrente = Lista->pElemCorr;
-			clonaElemento(Lista->pElemCorr, Corrente);
 			CED_DefinirTipoEspaco( Lista->pElemCorr->pValor , CED_ID_TIPO_VALOR_NULO ) ;
 			break;
 		}
@@ -733,8 +723,6 @@ void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao)
 
 		case DeturpaEliminaSemFree :
 		{
-			//Corrente = Lista->pElemCorr;
-			clonaElemento(Lista->pElemCorr, Corrente);
 			LIS_DesencadeiaSemFree(Lista);
 			break;
 		}
@@ -743,8 +731,6 @@ void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao)
 
 		case DeturpaPtCorrNulo :
 		{
-			//Corrente = Lista->pElemCorr;
-			clonaElemento(Lista->pElemCorr, Corrente);
 			Lista->pElemCorr = NULL;
 			break;
 		}
@@ -753,8 +739,6 @@ void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao)
 
 		case DeturpaPtOrigemNulo :
 		{
-			//Corrente = Lista->pElemCorr;
-			clonaElemento(Lista->pElemCorr, Corrente);
 			Lista->pOrigemLista = NULL;
 			break;
 		}
@@ -766,60 +750,101 @@ void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao)
 #endif
 
 #ifdef _DEBUG
-LIS_tpCondRet verificaLista (LIS_tppLista pLista, int* qtd)
+void verificaLista (LIS_tppLista pLista, int* qtd)
 {
 	int i, num, cont = 0;
-	void* valor, *valorGlobal;
+	void* valorCorr, *valorAux;
 	char* c;
 	LIS_tppLista listaAux;
-	int qtdFalhas = 0;
+	int qtdFalhas = 0, f;
+	struct tagElemLista *elemAux;
+
 	CED_MarcarTodosEspacosInativos(); // passo para verificar vazamento de memoria
-	// percorre a estrutura do inicio ao fim
-	// como eu vou testar cada deturpação?? 
-	// por exemplo, como vou saber que o corrente foi liberado, ou como que o valor aponta para um lixo.. etc
-	/*
-	Tivemos a ideia de guardar o corrente numa variavel global antes da deturpacao, assim poderiamos verificar o valor do corrente depois da deturpação
-	e checar se foi alterado...
-	*
-	*
-	*
-	*/
-	valor = LIS_ObterValor(pLista);
-	valorGlobal = Corrente->pValor;
-	if(valor == NULL)// se aux == null pode significar 2 coisas (pLista->ElemCorrente == NULL ou pLista->ElemCorrente->pValor == NULL)
+
+	elemAux = pLista->pElemCorr;
+	if(elemAux == NULL)// o corrente foi deturpado para nulo (deturpa 9)
 	{
-		if(LIS_AvancarElementoCorrente(pLista, 1) == LIS_CondRetListaVazia)
-		{
-			// entao foi o deturpa 9
-			// conta
-			TST_NotificarFalha("O ponteiro para o elemento corrente é NULL");
-			qtdFalhas++;
-		}
-		else
+		// conta
+		// entao foi o deturpa 9
+		TST_NotificarFalha("O ponteiro para o elemento corrente é NULL");
+		qtdFalhas++;
+	}
+	else
+	{
+		//conta
+		// entao elemAux != NULL
+		valorCorr = pLista->pElemCorr->pValor;
+		if(valorCorr == NULL)
 		{
 			//conta
 			TST_NotificarFalha("Ponteiro para o conteudo do no eh NULL");
 			qtdFalhas++;
 		}
-	}
-	else
-	{
-		// conta
-		// Como saber se é um elemento válido?
-		// e se n for...
-		// Como saber se foi dado free no elemento?
-		// Como saber se foi atribuido lixo ao elemento?
-		if(1)
-		{
-
-		}
 		else
 		{
-			// entao os seus elementos adjacentes podem ter sido deturpados
 			// conta
-
+			// o elemento é valido, vale checar seus adjacentes e seus tipos de espaço
+			// Como saber se é um elemento válido?
+			// e se n for...
+			// Como saber se foi dado free no elemento?
+			// Como saber se foi atribuido lixo ao elemento?
+			elemAux = pLista->pElemCorr->pProx;
+			// verifica a intergridade do elemento
+			verificaElemento(elemAux, &f);
+			qtdFalhas+=f;
+			if(elemAux == NULL)// entao proximo do corrente foi deturpado
+			{
+				// conta
+				TST_NotificarFalha("Ponteiro para o proximo do corrente eh NULL");
+				qtdFalhas++;
+			}
+			else
+			{
+				//conta
+				elemAux = pLista->pElemCorr->pAnt;
+				if(elemAux == NULL) // entao o anterior do corrente foi deturpado
+				{
+					// conta
+					TST_NotificarFalha("Ponteiro para o anterior do corrente eh NULL");
+					qtdFalhas++;
+				}
+				else
+				{
+					//conta
+					// agora vale checar se o prox ou o anterior sao lixo
+					elemAux = pLista->pElemCorr->pProx;
+					if(elemAux->pValor == NULL) // proximo é lixo
+					{
+						// conta
+						TST_NotificarFalha("Ponteiro para o proximo do corrente eh lixo");
+						qtdFalhas++;
+					}
+					else
+					{
+						//conta
+						elemAux = pLista->pElemCorr->pAnt;
+						if(elemAux->pValor == NULL)// anterior é lixo
+						{
+							// conta
+							TST_NotificarFalha("Ponteiro para o anterior do corrente eh lixo");
+							qtdFalhas++;
+						}
+						else
+						{
+							//conta
+							if(pLista->pOrigemLista == NULL)
+							{
+								// conta
+								TST_NotificarFalha("Ponteiro para a origem da lista é NULL");
+								qtdFalhas++;
+							}
+						}
+					}
+				}
+			}
 		}
 	}
+	*qtd = qtdFalhas;
 }
 #endif
 
@@ -849,14 +874,7 @@ LIS_tpCondRet verificaElemento (void * ppElem, int* f)
 	return LIS_CondRetOK;
 }
 
-void clonaElemento(tpElemLista * Origem, tpElemLista * Destino)
-{
-	Destino->pValor = Origem->pValor;
-	Destino->pProx = Origem->pProx;
-	Destino->pAnt = Origem->pAnt;
-	Destino->listaCabeca = Origem->listaCabeca;
-}
-
 #endif
+	
 /********** Fim do módulo de implementação: LIS  Lista duplamente encadeada **********/
 

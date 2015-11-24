@@ -111,7 +111,7 @@
 
    int PercorreLista(LIS_tppLista pLista);
 /*********************/
-
+   	struct tagElemLista* lixo = NULL;
 /*****  Código das funções exportadas pelo módulo  *****/
 
 /***************************************************************************
@@ -648,11 +648,6 @@ LIS_tpCondRet LIS_ObterTamanho( LIS_tppLista pLista,int * num)
 void DeturpaLista ( LIS_tppLista pLista, LIS_ModosDeturpacao Deturpacao)
 {
 	LIS_tpLista * Lista = NULL;
-	struct tagElemLista* lixo;
-	/*lixo->pAnt = NULL;
-	lixo->pProx = NULL;
-	lixo->pValor = NULL;
-	lixo->listaCabeca = Lista;*/
 	if(pLista == NULL)
 		return;
 	Lista = (LIS_tpLista*)(pLista);
@@ -660,56 +655,68 @@ void DeturpaLista ( LIS_tppLista pLista, LIS_ModosDeturpacao Deturpacao)
 
 		/* Elimina o nó corrente da estrutura */
 
-		case DeturpaEliminaCorr :
+	case DeturpaEliminaCorr :
 		{
-			lixo = CriarElemento(pLista, NULL);
+			lixo = ( tpElemLista * ) malloc( sizeof( tpElemLista )) ;
+			lixo->pAnt = NULL;
+			lixo->pProx = NULL;
+			lixo->pValor = NULL;
+			lixo->listaCabeca = Lista;
 			Lista->pElemCorr->pAnt->pProx = lixo;
 			Lista->pElemCorr->pProx->pAnt = lixo;
 			LiberarElemento(Lista, Lista->pElemCorr);
 			break;
 		}
 
-		 /* Anula o ponteiro para o próximo elemento da estrutura */
+		/* Anula o ponteiro para o próximo elemento da estrutura */
 
-		case DeturpaPtProxNulo :
+	case DeturpaPtProxNulo :
 		{
 
 			Lista->pElemCorr->pProx = NULL;
 			break;
-			
+
 		}
 
 		/* Anula o ponteiro para o elemento anterior */
 
-		case DeturpaPtAntNulo :
-			{
-		
+	case DeturpaPtAntNulo :
+		{
+
 			Lista->pElemCorr->pAnt = NULL;
 			break;
 
-			}
+		}
 
-		 /* Atribui Lixo para o ponteiro do próximo elemento */
+		/* Atribui Lixo para o ponteiro do próximo elemento */
 
-		case DeturpaPtProxLixo:
+	case DeturpaPtProxLixo:
 		{
-			lixo = CriarElemento(pLista, NULL);
+			lixo = ( tpElemLista * ) malloc( sizeof( tpElemLista )) ;
+			lixo->pAnt = NULL;
+			lixo->pProx = NULL;
+			lixo->pValor = NULL;
+			lixo->listaCabeca = Lista;
 			Lista->pElemCorr->pProx = lixo;
 			break;
 		}
 
-		 /* Atribui Lixo para o ponteiro para o elemento anterior */
+		/* Atribui Lixo para o ponteiro para o elemento anterior */
 
-		case DeturpaPtAntLixo :
+	case DeturpaPtAntLixo :
 		{
-			lixo = CriarElemento(pLista, NULL);
+			lixo = ( tpElemLista * ) malloc( sizeof( tpElemLista )) ;
+			lixo->pAnt = NULL;
+			lixo->pProx = NULL;
+			lixo->pValor = NULL;
+			lixo->listaCabeca = Lista;
 			Lista->pElemCorr->pAnt = lixo;
 			break;
 		}
 
 		/* Atribui Nulo ao conteúdo do nó corrente */
 
-		case DeturpaPtConteudoCorrNulo :
+	case DeturpaPtConteudoCorrNulo :
 		{
 			Lista->pElemCorr->pValor = NULL;
 			break;
@@ -766,7 +773,7 @@ void verificaLista (LIS_tppLista pLista, int* qtd)
 	*qtd = 0;
 
 	CED_MarcarTodosEspacosInativos(); // passo para verificar vazamento de memoria
-
+	CED_MarcarEspacoAtivo(lixo);
 	elemAux = pLista->pElemCorr;
 	if(elemAux == NULL)// o corrente foi deturpado para nulo (deturpa 9)
 	{
@@ -865,7 +872,14 @@ void verificaLista (LIS_tppLista pLista, int* qtd)
 									else
 									{
 									//conta
+
 									qtdFalhas += VerificaVazamentoMem(pLista);
+									if(qtdFalhas > 0)
+									{
+										//conta
+										TST_NotificarFalha("Houve vazamento de memoria");
+									}
+									else /*conta*/;
 									}
 								}
 							}

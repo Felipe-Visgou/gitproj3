@@ -90,8 +90,8 @@
 #ifdef _DEBUG
 /***** Declaração dos tipos de dados da lista*/
    typedef enum {
-	   LIS_TipoCabeca,
-	   LIS_TipoElemento
+	   LIS_TipoCabeca = 1,
+	   LIS_TipoElemento = 2
    } LIS_TipoEspaco;
 #endif
 
@@ -105,9 +105,11 @@
 
    LIS_tpCondRet verificaElemento (void * ppElem, int* f);
 
+   int VerificaVazamentoMem(LIS_tppLista pLista);
+
    static void LimparCabeca( LIS_tppLista pLista ) ;
 
-
+   int PercorreLista(LIS_tppLista pLista);
 /*********************/
 
 /*****  Código das funções exportadas pelo módulo  *****/
@@ -643,24 +645,24 @@ LIS_tpCondRet LIS_ObterTamanho( LIS_tppLista pLista,int * num)
 
 #ifdef _DEBUG
 /********** Fim do módulo de implementação: LIS  Lista duplamente encadeada **********/
-void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao)
+void DeturpaLista ( LIS_tppLista pLista, LIS_ModosDeturpacao Deturpacao)
 {
 	LIS_tpLista * Lista = NULL;
-	struct tagElemLista* lixo = (struct tagElemLista*)malloc(sizeof(struct tagElemLista));
-	lixo->pAnt = NULL;
+	struct tagElemLista* lixo;
+	/*lixo->pAnt = NULL;
 	lixo->pProx = NULL;
 	lixo->pValor = NULL;
-	lixo->listaCabeca = Lista;
+	lixo->listaCabeca = Lista;*/
 	if(pLista == NULL)
 		return;
 	Lista = (LIS_tpLista*)(pLista);
-	LIS_AvancarElementoCorrente(Lista, 2);
 	switch (Deturpacao) {
 
 		/* Elimina o nó corrente da estrutura */
 
 		case DeturpaEliminaCorr :
 		{
+			lixo = CriarElemento(pLista, NULL);
 			Lista->pElemCorr->pAnt->pProx = lixo;
 			Lista->pElemCorr->pProx->pAnt = lixo;
 			LiberarElemento(Lista, Lista->pElemCorr);
@@ -691,6 +693,7 @@ void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao)
 
 		case DeturpaPtProxLixo:
 		{
+			lixo = CriarElemento(pLista, NULL);
 			Lista->pElemCorr->pProx = lixo;
 			break;
 		}
@@ -699,6 +702,7 @@ void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao)
 
 		case DeturpaPtAntLixo :
 		{
+			lixo = CriarElemento(pLista, NULL);
 			Lista->pElemCorr->pAnt = lixo;
 			break;
 		}
@@ -715,7 +719,7 @@ void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao)
 
 		case DeturpaTipoCorr :
 		{
-			CED_DefinirTipoEspaco( Lista->pElemCorr->pValor , CED_ID_TIPO_VALOR_NULO ) ;
+			CED_DefinirTipoEspaco( Lista->pElemCorr , CED_ID_TIPO_VALOR_NULO ) ;
 			break;
 		}
 
@@ -750,14 +754,16 @@ void DeturpaLista ( void* pLista, LIS_ModosDeturpacao Deturpacao)
 #endif
 
 #ifdef _DEBUG
+// Só n é possível testar a deturpa 1 e 8
 void verificaLista (LIS_tppLista pLista, int* qtd)
 {
-	int i, num, cont = 0;
+	int i, num, cont = 0, tamObtido, tipoObtido;
 	void* valorCorr, *valorAux;
 	char* c;
 	LIS_tppLista listaAux;
 	int qtdFalhas = 0, f;
 	struct tagElemLista *elemAux;
+	*qtd = 0;
 
 	CED_MarcarTodosEspacosInativos(); // passo para verificar vazamento de memoria
 
@@ -783,60 +789,85 @@ void verificaLista (LIS_tppLista pLista, int* qtd)
 		else
 		{
 			// conta
-			// o elemento é valido, vale checar seus adjacentes e seus tipos de espaço
-			// Como saber se é um elemento válido?
-			// e se n for...
-			// Como saber se foi dado free no elemento?
-			// Como saber se foi atribuido lixo ao elemento?
-			elemAux = pLista->pElemCorr->pProx;
-			// verifica a intergridade do elemento
-			verificaElemento(elemAux, &f);
-			qtdFalhas+=f;
-			if(elemAux == NULL)// entao proximo do corrente foi deturpado
+			elemAux = pLista->pElemCorr;
+			tamObtido = PercorreLista(pLista);
+			if(tamObtido != pLista->numElem)
 			{
-				// conta
-				TST_NotificarFalha("Ponteiro para o proximo do corrente eh NULL");
+				//conta
+				TST_NotificarFalha("Ponteiro para o corrente foi liberado");
 				qtdFalhas++;
 			}
 			else
 			{
-				//conta
-				elemAux = pLista->pElemCorr->pAnt;
-				if(elemAux == NULL) // entao o anterior do corrente foi deturpado
+				pLista->pElemCorr = elemAux;
+
+				verificaElemento(elemAux, &f);
+
+				elemAux = pLista->pElemCorr->pProx;
+				// verifica a intergridade do elemento
+				qtdFalhas+=f;
+				if(elemAux == NULL)// entao proximo do corrente foi deturpado
 				{
 					// conta
-					TST_NotificarFalha("Ponteiro para o anterior do corrente eh NULL");
+					TST_NotificarFalha("Ponteiro para o proximo do corrente eh NULL");
 					qtdFalhas++;
 				}
 				else
 				{
 					//conta
-					// agora vale checar se o prox ou o anterior sao lixo
-					elemAux = pLista->pElemCorr->pProx;
-					if(elemAux->pValor == NULL) // proximo é lixo
+					elemAux = pLista->pElemCorr->pAnt;
+					if(elemAux == NULL) // entao o anterior do corrente foi deturpado
 					{
 						// conta
-						TST_NotificarFalha("Ponteiro para o proximo do corrente eh lixo");
+						TST_NotificarFalha("Ponteiro para o anterior do corrente eh NULL");
 						qtdFalhas++;
 					}
 					else
 					{
 						//conta
-						elemAux = pLista->pElemCorr->pAnt;
-						if(elemAux->pValor == NULL)// anterior é lixo
+						// agora vale checar se o prox ou o anterior sao lixo
+						elemAux = pLista->pElemCorr->pProx;
+						if(elemAux->pValor == NULL) // proximo é lixo
 						{
 							// conta
-							TST_NotificarFalha("Ponteiro para o anterior do corrente eh lixo");
+							TST_NotificarFalha("Ponteiro para o proximo do corrente eh lixo");
 							qtdFalhas++;
 						}
 						else
 						{
 							//conta
-							if(pLista->pOrigemLista == NULL)
+							elemAux = pLista->pElemCorr->pAnt;
+							if(elemAux->pValor == NULL)// anterior é lixo
 							{
 								// conta
-								TST_NotificarFalha("Ponteiro para a origem da lista é NULL");
+								TST_NotificarFalha("Ponteiro para o anterior do corrente eh lixo");
 								qtdFalhas++;
+							}
+							else
+							{
+								//conta
+								if(pLista->pOrigemLista == NULL)
+								{
+									// conta
+									TST_NotificarFalha("Ponteiro para a origem da lista é NULL");
+									qtdFalhas++;
+								}
+								else
+								{
+									//conta
+									tipoObtido = CED_ObterTipoEspaco( pLista->pElemCorr );
+									if(tipoObtido !=  LIS_TipoElemento)
+									{
+										// conta
+										TST_NotificarFalha("Tipo de espaco deturpado, nao eh elemento");
+										qtdFalhas++;
+									}
+									else
+									{
+									//conta
+									qtdFalhas += VerificaVazamentoMem(pLista);
+									}
+								}
 							}
 						}
 					}
@@ -874,6 +905,66 @@ LIS_tpCondRet verificaElemento (void * ppElem, int* f)
 	return LIS_CondRetOK;
 }
 
+int PercorreLista(LIS_tppLista pLista)
+{
+	int cont1 = 0, cont2 = 0;
+	pLista->pElemCorr = pLista->pOrigemLista;
+	while(pLista->pElemCorr != NULL)
+	{
+		cont1++;
+		pLista->pElemCorr = pLista->pElemCorr->pProx;
+	}
+	// trás para a frente
+	pLista->pElemCorr = pLista->pFimLista;
+	while(pLista->pElemCorr != NULL)
+	{
+		cont2++;
+		pLista->pElemCorr = pLista->pElemCorr->pAnt;
+	}
+	if(cont1 == pLista->numElem || cont2 == pLista->numElem)
+		return pLista->numElem;
+	else
+		return cont1;
+}
+int VerificaVazamentoMem(LIS_tppLista pLista)
+{
+	/*
+	void CED_InicializarIteradorEspacos( ) ;
+	int CED_AvancarProximoEspaco( ) ;
+	void * CED_ObterPonteiroEspacoCorrente( ) ;
+	int CED_EhEspacoAtivo( void * Ponteiro ) ;
+	void CED_ExibirTodosEspacos( CED_tpModoExibir Regra ) ;
+	*/
+	void* aux;
+	int i, contaInativos = 0, f;
+	struct tagElemLista * elemAux;
+	void CED_InicializarIteradorEspacos( ) ;
+	elemAux = pLista->pOrigemLista;
+	// Percorre a estrutura marcando os espaços ativos
+	CED_MarcarEspacoAtivo(pLista);
+	while(elemAux != NULL)
+	{
+		verificaElemento(elemAux, &f);
+		elemAux = elemAux->pProx;
+	}
+	// percorre a lista de espaços alocados verficando se existe algum espaço inativo, se tiver, entao houve vazamento
+	CED_InicializarIteradorEspacos( ) ;
+	do
+	{
+		aux = CED_ObterPonteiroEspacoCorrente( ) ;
+		if(!CED_EhEspacoAtivo( aux ))
+			contaInativos++;
+	}while(CED_AvancarProximoEspaco( ));
+
+	// exibe todos os espaços inativos se houver
+	if(contaInativos > 0)
+	{
+		CED_ExibirTodosEspacos( CED_ExibirInativos ) ;
+		f = 1;
+	}
+	CED_TerminarIteradorEspacos();
+	return f;
+}
 #endif
 	
 /********** Fim do módulo de implementação: LIS  Lista duplamente encadeada **********/

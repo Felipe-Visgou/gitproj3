@@ -1,0 +1,1 @@
+final4 /stestelista7 > log7.txt

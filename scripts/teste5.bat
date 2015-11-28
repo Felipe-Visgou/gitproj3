@@ -1,0 +1,1 @@
+final4 /stestelista5 > log5.txt

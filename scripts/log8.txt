@@ -1,0 +1,44 @@
+
+
+LES - Laboratório de Engenharia de Software DI/PUC-Rio
+      Arcabouço de teste de módulos C  (c) 2006
+
+---------------------------------------------
+      Construto sob teste: final4
+
+      Arquivo de teste:    testelista8
+
+
+!!!    0  Linha:     1  // Script:    TesteLista.script 
+!!!    0  Linha:     2  // Autor:     Arndt von Staa, Felipe Vieira 
+!!!    0  Linha:     3  // Data:      30/ago/2015 
+!!!    0  Linha:     4  // 
+    6  == Inicializar valores
+!!!    0  Linha:    33  //____________________________________ 8>> 
+   34  == Criar a lista 0
+   37  == Inserir elementos na lista
+   45  == Avancar para o meio da lista
+   47  == Verifica
+   50  == Deturpa DeturpaEliminaSemFree
+   53  == Verifica
+
+!!!  Espaco de dados, id:     4  pValor: 011FA082  hexa: 82 A0 1F 01  Id ant:     5  Id suc:     3
+     Id tipo valor: 2  Tamanho: 16  Nao ativo  Linha onde alocou: 562  Arquivo: 07f3bf8bd9d84fd5e2f6ae5\lista.c
+     Controle antes OK  Controle apos OK
+          0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F   0123456789ABCDEF
+    000  3A 9C 1F 01 78 8D 1F 01 92 A1 1F 01 72 9F 1F 01   :œ..x..’¡..rŸ..
+
+>>>    1  Linha:    54  Houve vazamento de memoria 
+<<<    0  Linha:    55  Falhas registradas eram esperadas e foram recuperadas. 
+   57  == Destruir a lista
+!!!    0  Linha:    60  // fim 
+
+!!! Número de linhas lidas:          60
+!!! Número de casos de teste:         8
+!!! Número comandos corretos:        33
+!!! Número de falhas encontradas:     0
+
+!!! Não foram encontrados problemas
+
+
+!!! Numero de espacos ainda alocados: 1

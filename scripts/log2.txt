@@ -1,0 +1,36 @@
+
+
+LES - Laboratório de Engenharia de Software DI/PUC-Rio
+      Arcabouço de teste de módulos C  (c) 2006
+
+---------------------------------------------
+      Construto sob teste: final4
+
+      Arquivo de teste:    testelista2
+
+
+!!!    0  Linha:     1  // Script:    TesteLista.script 
+!!!    0  Linha:     2  // Autor:     Arndt von Staa, Felipe Vieira 
+!!!    0  Linha:     3  // Data:      30/ago/2015 
+!!!    0  Linha:     4  // 
+    6  == Inicializar valores
+!!!    0  Linha:    33  //______________________________________ 2>> 
+   35  == Criar a lista 0
+   38  == Inserir elementos na lista
+   46  == Avancar para o meio da lista
+   49  == Verifica
+   52  == Deturpa DeturpaPtProxNulo
+   55  == Verifica
+>>>    1  Linha:    56  Ponteiro para o proximo do corrente eh NULL 
+<<<    0  Linha:    57  Falhas registradas eram esperadas e foram recuperadas. 
+   59  == Destruir a lista
+
+!!! Número de linhas lidas:          60
+!!! Número de casos de teste:         8
+!!! Número comandos corretos:        33
+!!! Número de falhas encontradas:     0
+
+!!! Não foram encontrados problemas
+
+
+!!! Numero de espacos ainda alocados: 3

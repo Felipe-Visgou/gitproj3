@@ -1,0 +1,37 @@
+
+
+LES - Laboratório de Engenharia de Software DI/PUC-Rio
+      Arcabouço de teste de módulos C  (c) 2006
+
+---------------------------------------------
+      Construto sob teste: final4
+
+      Arquivo de teste:    testelista6
+
+
+!!!    0  Linha:     1  // Script:    TesteLista.script 
+!!!    0  Linha:     2  // Autor:     Arndt von Staa, Felipe Vieira 
+!!!    0  Linha:     3  // Data:      30/ago/2015 
+!!!    0  Linha:     4  // 
+    6  == Inicializar valores
+!!!    0  Linha:    33  //_____________________________________________ 6>> 
+   35  == Criar a lista 0
+   38  == Inserir elementos na lista
+   46  == Avancar para o meio da lista
+   48  == Verifica
+   51  == Deturpa DeturpaPtConteudoCorrNulo
+   54  == Verifica
+>>>    1  Linha:    55  Ponteiro para o conteudo do no eh NULL 
+<<<    0  Linha:    56  Falhas registradas eram esperadas e foram recuperadas. 
+   58  == Destruir a lista
+!!!    0  Linha:    61  // fim 
+
+!!! Número de linhas lidas:          61
+!!! Número de casos de teste:         8
+!!! Número comandos corretos:        33
+!!! Número de falhas encontradas:     0
+
+!!! Não foram encontrados problemas
+
+
+!!! Numero de espacos ainda alocados: 0

@@ -94,7 +94,7 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
 ***********************************************************************/
 
    TST_tpCondRet TST_EfetuarComando( char * ComandoTeste )
-   {
+    {
 
       int inxLista  = -1 ,
           numLidos   = -1 ,

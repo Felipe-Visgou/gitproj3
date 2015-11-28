@@ -88,6 +88,13 @@
    } LIS_tpLista ;
 
 #ifdef _DEBUG
+   struct FreeElemento{
+	   struct tagElemLista * vElem[100];
+	   int inicio;
+	   int fim;
+   };
+#endif
+#ifdef _DEBUG
 /***** Declaração dos tipos de dados da lista*/
    typedef enum {
 	   LIS_TipoCabeca = 1,
@@ -111,7 +118,10 @@
 
    int PercorreLista(LIS_tppLista pLista);
 /*********************/
+#ifdef _DEBUG
    	struct tagElemLista* lixo = NULL;
+	 struct FreeElemento elemf;
+#endif
 /*****  Código das funções exportadas pelo módulo  *****/
 
 /***************************************************************************
@@ -122,7 +132,7 @@
    LIS_tppLista LIS_CriarLista(
              void   ( * ExcluirValor ) ( void * pDado ) )
    {
-
+	   int i;
       LIS_tpLista * pLista = NULL ;
 
       pLista = ( LIS_tpLista * ) malloc( sizeof( LIS_tpLista )) ;
@@ -137,6 +147,10 @@
 
 	#ifdef _DEBUG
          CED_DefinirTipoEspaco( pLista , LIS_TipoCabeca ) ;
+		 for(i = 0; i < 100; i++)
+			 elemf.vElem[i] = NULL;
+		 elemf.fim = 0;
+		 elemf.inicio = 0;
     #endif
 
       return pLista ;
@@ -150,13 +164,12 @@
 
    void LIS_DestruirLista( LIS_tppLista pLista )
    {
-
+	   int i=0;
       #ifdef _DEBUG
          assert( pLista != NULL ) ;
       #endif
 
       LIS_EsvaziarLista( pLista ) ;
-
       free( pLista ) ;
 
    } /* Fim função: LIS  &Destruir lista */
@@ -168,7 +181,7 @@
 
    void LIS_EsvaziarLista( LIS_tppLista pLista )
    {
-
+	   int i = 0;
       tpElemLista * pElem ;
       tpElemLista * pProx ;
 
@@ -184,7 +197,15 @@
          pElem = pProx ;
       } /* while */
 
-      LimparCabeca( pLista ) ;
+#ifdef _DEBUG
+	  while(elemf.vElem[i] != NULL)
+	  {
+		  if(elemf.fim == 1) break;
+		  free(elemf.vElem[i]);
+		  i++;
+	  }
+#endif
+	  LimparCabeca( pLista ) ;
 
    } /* Fim função: LIS  &Esvaziar lista */
 
@@ -541,7 +562,13 @@ LIS_tpCondRet LIS_ObterTamanho( LIS_tppLista pLista,int * num)
       } /* if */
 
       free( pElem ) ;
-
+#ifdef _DEBUG
+	  pElem->listaCabeca = NULL;
+	  pElem->pAnt = NULL;
+	  pElem->pProx = NULL;
+	  elemf.vElem[elemf.fim - 1] = NULL;
+	  elemf.fim--;
+#endif
       pLista->numElem-- ;
 
    } /* Fim função: LIS  -Liberar elemento da lista */
@@ -556,7 +583,7 @@ LIS_tpCondRet LIS_ObterTamanho( LIS_tppLista pLista,int * num)
    tpElemLista * CriarElemento( LIS_tppLista pLista ,
                                 void *       pValor  )
    {
-
+	   int i = 0;
       tpElemLista * pElem ;
 
       pElem = ( tpElemLista * ) malloc( sizeof( tpElemLista )) ;
@@ -568,6 +595,9 @@ LIS_tpCondRet LIS_ObterTamanho( LIS_tppLista pLista,int * num)
 	#ifdef _DEBUG
       CED_DefinirTipoEspaco( pElem , LIS_TipoElemento ) ;
 	  pElem->listaCabeca = pLista;
+
+	  elemf.vElem[elemf.fim] = pElem;
+	  elemf.fim++;
 	#endif
 
       pElem->pValor = pValor ;
@@ -664,7 +694,7 @@ void DeturpaLista ( LIS_tppLista pLista, LIS_ModosDeturpacao Deturpacao)
 			lixo->listaCabeca = Lista;
 			Lista->pElemCorr->pAnt->pProx = lixo;
 			Lista->pElemCorr->pProx->pAnt = lixo;
-			LiberarElemento(Lista, Lista->pElemCorr);
+			free(Lista->pElemCorr);
 			break;
 		}
 
@@ -801,6 +831,7 @@ void verificaLista (LIS_tppLista pLista, int* qtd)
 			if(tamObtido != pLista->numElem)
 			{
 				//conta
+
 				TST_NotificarFalha("Ponteiro para o corrente foi liberado");
 				qtdFalhas++;
 			}
@@ -872,7 +903,6 @@ void verificaLista (LIS_tppLista pLista, int* qtd)
 									else
 									{
 									//conta
-
 									qtdFalhas += VerificaVazamentoMem(pLista);
 									if(qtdFalhas > 0)
 									{
@@ -961,6 +991,7 @@ int VerificaVazamentoMem(LIS_tppLista pLista)
 		verificaElemento(elemAux, &f);
 		elemAux = elemAux->pProx;
 	}
+
 	// percorre a lista de espaços alocados verficando se existe algum espaço inativo, se tiver, entao houve vazamento
 	CED_InicializarIteradorEspacos( ) ;
 	do

@@ -30,6 +30,10 @@
 =declararparm   DeturpaPtCorrNulo       int  9
 =declararparm   DeturpaPtOrigemNulo		int  10
 
+=inicializarcontadores  ""
+=lercontadores          "Lista"
+=iniciarcontagem
+
 //_________________________________________ 1>>
 
 == Criar a lista 0
@@ -60,4 +64,9 @@
 == Destruir a lista
 =destruirlista   lista0
 
+== Registrar acumulador
+=registraracumulador   "acumulador"
+
+== Terminar contagem
+=terminarcontadores
 // fim

@@ -14,22 +14,24 @@ LES - Laboratório de Engenharia de Software DI/PUC-Rio
 !!!    0  Linha:     3  // Data:      30/ago/2015 
 !!!    0  Linha:     4  // 
     6  == Inicializar valores
-!!!    0  Linha:    33  //_________________________________________ 1>> 
-   35  == Criar a lista 0
-   38  == Inserir elementos na lista
-   46  == Avancar para o meio da lista
-   49  == Verifica
-<<<    0  Linha:    51  Falhas registradas eram esperadas e foram recuperadas. 
-   53  == Deturpa DeturpaEliminaCorr
-   56  == Verifica
->>>    1  Linha:    57  Ponteiro para o corrente foi liberado 
-<<<    0  Linha:    58  Falhas registradas eram esperadas e foram recuperadas. 
-   60  == Destruir a lista
-!!!    0  Linha:    63  // fim 
+!!!    0  Linha:    37  //_________________________________________ 1>> 
+   39  == Criar a lista 0
+   42  == Inserir elementos na lista
+   50  == Avancar para o meio da lista
+   53  == Verifica
+<<<    0  Linha:    55  Falhas registradas eram esperadas e foram recuperadas. 
+   57  == Deturpa DeturpaEliminaCorr
+   60  == Verifica
+>>>    1  Linha:    61  Ponteiro para o corrente foi liberado 
+<<<    0  Linha:    62  Falhas registradas eram esperadas e foram recuperadas. 
+   64  == Destruir a lista
+   67  == Registrar acumulador
+   70  == Terminar contagem
+!!!    0  Linha:    72  // fim 
 
-!!! Número de linhas lidas:          63
-!!! Número de casos de teste:         8
-!!! Número comandos corretos:        34
+!!! Número de linhas lidas:          72
+!!! Número de casos de teste:        10
+!!! Número comandos corretos:        39
 !!! Número de falhas encontradas:     0
 
 !!! Não foram encontrados problemas

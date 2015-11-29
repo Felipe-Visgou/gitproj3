@@ -777,36 +777,35 @@ void verificaLista (LIS_tppLista pLista, int* qtd)
 	elemAux = pLista->pElemCorr;
 	if(elemAux == NULL)// o corrente foi deturpado para nulo (deturpa 9)
 	{
-		CNT_CONTAR( "ElemCorrNulo" ) ;
+		// conta
 		// entao foi o deturpa 9
 		TST_NotificarFalha("O ponteiro para o elemento corrente é NULL");
 		qtdFalhas++;
 	}
 	else
 	{
-		CNT_CONTAR( "NaoElemCorrNulo" ) ;
+		//conta
 		// entao elemAux != NULL
 		valorCorr = pLista->pElemCorr->pValor;
 		if(valorCorr == NULL)
 		{
-			CNT_CONTAR( "ElemCorrValorNulo" ) ;
+			//conta
 			TST_NotificarFalha("Ponteiro para o conteudo do no eh NULL");
 			qtdFalhas++;
 		}
 		else
 		{
-			CNT_CONTAR( "NaoElemCorrValorNulo" ) ;
+			// conta
 			elemAux = pLista->pElemCorr;
 			tamObtido = PercorreLista(pLista);
 			if(tamObtido != pLista->numElem)
 			{
-				CNT_CONTAR( "TamanhoLista" ) ;
+				//conta
 				TST_NotificarFalha("Ponteiro para o corrente foi liberado");
 				qtdFalhas++;
 			}
 			else
 			{
-				CNT_CONTAR( "NaoTamanhoLista" ) ;
 				pLista->pElemCorr = elemAux;
 
 				verificaElemento(elemAux, &f);
@@ -816,72 +815,71 @@ void verificaLista (LIS_tppLista pLista, int* qtd)
 				qtdFalhas+=f;
 				if(elemAux == NULL)// entao proximo do corrente foi deturpado
 				{
-					CNT_CONTAR( "ElemCorrPproxNulo" ) ;
+					// conta
 					TST_NotificarFalha("Ponteiro para o proximo do corrente eh NULL");
 					qtdFalhas++;
 				}
 				else
 				{
-					CNT_CONTAR( "NaoElemCorrPproxNulo" ) ;
+					//conta
 					elemAux = pLista->pElemCorr->pAnt;
 					if(elemAux == NULL) // entao o anterior do corrente foi deturpado
 					{
-						CNT_CONTAR( "ElemCorrPantNulo" ) ;
+						// conta
 						TST_NotificarFalha("Ponteiro para o anterior do corrente eh NULL");
 						qtdFalhas++;
 					}
 					else
 					{
-						CNT_CONTAR( "NaoElemCorrPantNulo" ) ;
+						//conta
 						// agora vale checar se o prox ou o anterior sao lixo
 						elemAux = pLista->pElemCorr->pProx;
 						if(elemAux->pValor == NULL) // proximo é lixo
 						{
- 							CNT_CONTAR( "ElemCorrPproxPvalorNulo" ) ;
+							// conta
 							TST_NotificarFalha("Ponteiro para o proximo do corrente eh lixo");
 							qtdFalhas++;
 						}
 						else
 						{
- 							CNT_CONTAR( "NaoElemCorrPproxPvalorNulo" ) ;
+							//conta
 							elemAux = pLista->pElemCorr->pAnt;
 							if(elemAux->pValor == NULL)// anterior é lixo
 							{
-								CNT_CONTAR( "ElemCorrPantPvalorNulo" ) ;
+								// conta
 								TST_NotificarFalha("Ponteiro para o anterior do corrente eh lixo");
 								qtdFalhas++;
 							}
 							else
 							{
- 								CNT_CONTAR( "NaoElemCorrPantPvalorNulo" ) ;
+								//conta
 								if(pLista->pOrigemLista == NULL)
 								{
- 									CNT_CONTAR( "OrigemListaNulo" ) ;
+									// conta
 									TST_NotificarFalha("Ponteiro para a origem da lista é NULL");
 									qtdFalhas++;
 								}
 								else
 								{
- 									CNT_CONTAR( "NaoOrigemListaNulo" ) ;
+									//conta
 									tipoObtido = CED_ObterTipoEspaco( pLista->pElemCorr );
 									if(tipoObtido !=  LIS_TipoElemento)
 									{
-										CNT_CONTAR( "TipoDaLista" ) ;
+										// conta
 										TST_NotificarFalha("Tipo de espaco deturpado, nao eh elemento");
 										qtdFalhas++;
 									}
 									else
 									{
-										CNT_CONTAR( "NaoTipoDaLista" ) ;
+									//conta
 
 									qtdFalhas += VerificaVazamentoMem(pLista);
 									if(qtdFalhas > 0)
 									{
-										CNT_CONTAR( "VazamentoDaLista" ) ;
+										//conta
 										TST_NotificarFalha("Houve vazamento de memoria");
 									}
-									else 
-										CNT_CONTAR( "NaoVazamentoDaLista" ) ;;
+									else /*conta*/;
 									}
 								}
 							}

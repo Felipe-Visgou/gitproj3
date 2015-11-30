@@ -36,7 +36,7 @@
 =iniciarcontagem
 
 
-//___________________________________________ 10>>
+//___________________________________________ 11>>
 == Criar a lista 0
 =criarlista      lista0 
 
@@ -50,11 +50,9 @@
 
 == Avancar para o meio da lista
 =avancarelem lista0		2		0
-== Verifica
-=verifica lista0 0
 
-== Deturpa DeturpaPtOrigemNulo
-=deturpa lista0 DeturpaPtOrigemNulo
+== Deturpa TipoCabeca
+=deturpa lista0 11
 
 == Verifica
 =verifica lista0 1
@@ -63,10 +61,10 @@
 == Destruir a lista
 =destruirlista   lista0
 
-== Registrar acumulador
-=registraracumulador   "acumulador"
+== Terminar controlar contadores
+=pararcontagem
+=verificarcontagens    0
 
 == Terminar contagem
 =terminarcontadores
-
 // fim

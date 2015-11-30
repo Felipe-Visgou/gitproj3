@@ -6,7 +6,7 @@ LES - Laboratório de Engenharia de Software DI/PUC-Rio
 ---------------------------------------------
       Construto sob teste: TRAB4-2
 
-      Arquivo de teste:    testelista10
+      Arquivo de teste:    testelista11
 
 
 !!!    0  Linha:     1  // Script:    TesteLista.script 
@@ -15,26 +15,25 @@ LES - Laboratório de Engenharia de Software DI/PUC-Rio
 !!!    0  Linha:     4  // 
     6  == Inicializar valores
    33  == Inicializar contadores
-!!!    0  Linha:    39  //___________________________________________ 10>> 
+!!!    0  Linha:    39  //___________________________________________ 11>> 
    40  == Criar a lista 0
    43  == Inserir elementos na lista
    51  == Avancar para o meio da lista
-   53  == Verifica
-   56  == Deturpa DeturpaPtOrigemNulo
-   59  == Verifica
->>>    1  Linha:    60  Ponteiro para a origem da lista é NULL 
-<<<    0  Linha:    61  Falhas registradas eram esperadas e foram recuperadas. 
-   63  == Destruir a lista
-   66  == Registrar acumulador
-   69  == Terminar contagem
-!!!    0  Linha:    72  // fim 
+   54  == Deturpa TipoCabeca
+   57  == Verifica
+>>>    1  Linha:    58  Houve vazamento de memoria 
+<<<    0  Linha:    59  Falhas registradas eram esperadas e foram recuperadas. 
+   61  == Destruir a lista
+   64  == Terminar controlar contadores
+   68  == Terminar contagem
+!!!    0  Linha:    70  // fim 
 
-!!! Número de linhas lidas:          72
-!!! Número de casos de teste:        11
+!!! Número de linhas lidas:          70
+!!! Número de casos de teste:        10
 !!! Número comandos corretos:        38
 !!! Número de falhas encontradas:     0
 
 !!! Não foram encontrados problemas
 
 
-!!! Numero de espacos ainda alocados: 6
+!!! Numero de espacos ainda alocados: 0

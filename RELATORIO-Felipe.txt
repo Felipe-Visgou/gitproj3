@@ -1,0 +1,7 @@
+Data	 			Horas Trabalhadas				 Tipo Tarefa	     					Descrição da Tarefa Realizada
+
+16/08					2h					Codificar/projetar					As deturpações foram implementadas e começamos a pensar como cada uma seria verificada				
+18/08					2h					Codificar/projetar/revisar código			Funções auxiliares para ajudar na instrumentação de lista 
+23/08					2h					Redigir script de teste/Revisar código			Script de teste para todas as deturpações, verifica funcionando menos para 1 e a 8
+25/08					2h					Redigir script de teste/realizar os testes		Função de verificação funcionando para todas, apontado vazamento de memória
+30/08					3h					Redigir script de teste/realizar os testes/diagnósticos	Fetio 10 scripts para o teste de todas as deturpaçoes, nenhum contador zerado.

@@ -1,0 +1,1 @@
+TRAB4-2 /stestelista11 > log11.txt

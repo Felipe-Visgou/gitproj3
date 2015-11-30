@@ -855,11 +855,17 @@ void DeturpaLista ( LIS_tppLista pLista, LIS_ModosDeturpacao Deturpacao)
 		 /* Atribui nulo ao ponteiro de origem da estrutura */
 
 		case DeturpaPtOrigemNulo :
-		{
-			Lista->pOrigemLista = NULL;
-			break;
-		}
+			{
+				Lista->pOrigemLista = NULL;
+				break;
+			}
 
+			/* Altera o tipo de espaço da cabeça de lista*/
+		case DeturpaTipoCabeca :
+			{
+				CED_DefinirTipoEspaco(Lista , CED_ID_TIPO_VALOR_NULO ) ;
+				break;
+			}
 		default:
 			break;
 	} /* Fim Switch Deturpacao */
@@ -890,7 +896,7 @@ void verificaLista (LIS_tppLista pLista, int* qtd)
 	}
 	else
 	{
-		CNT_CONTAR( "NaoElemCorrNulo" ) ;
+		CNT_CONTAR( "NaoElemCorrNulo") ;
 		// entao elemAux != NULL
 		valorCorr = pLista->pElemCorr->pValor;
 		if(valorCorr == NULL)
@@ -979,15 +985,25 @@ void verificaLista (LIS_tppLista pLista, int* qtd)
 									else
 									{
 										CNT_CONTAR( "NaoTipoDaLista" ) ;
-
-									qtdFalhas += VerificaVazamentoMem(pLista);
-									if(qtdFalhas > 0)
-									{
-										CNT_CONTAR( "VazamentoDaLista" ) ;
-										TST_NotificarFalha("Houve vazamento de memoria");
-									}
-									else 
-										CNT_CONTAR( "NaoVazamentoDaLista" ) ;;
+										tipoObtido = CED_ObterTipoEspaco(pLista);
+										if(tipoObtido != LIS_TipoCabeca)
+										{
+												CNT_CONTAR( "TipoCabeca" ) ;
+												TST_NotificarFalha("Houve vazamento de memoria");
+												qtdFalhas++;
+										}
+										else
+										{
+											CNT_CONTAR( "NaoTipoCabeca" ) ;
+											qtdFalhas += VerificaVazamentoMem(pLista);
+											if(qtdFalhas > 0)
+											{
+												CNT_CONTAR( "VazamentoDaLista" ) ;
+												TST_NotificarFalha("Houve vazamento de memoria");
+											}
+											else 
+												CNT_CONTAR( "NaoVazamentoDaLista" ) ;
+										}
 									}
 								}
 							}
@@ -1009,6 +1025,8 @@ LIS_tpCondRet verificaElemento (void * ppElem, int* f)
 	int falha = 0;
 	pElem = (tpElemLista*)(ppElem);
 
+	CNT_CONTAR("verificaElem");
+
 	// marca elemento ativo
 	CED_MarcarEspacoAtivo(pElem);
 
@@ -1017,9 +1035,11 @@ LIS_tpCondRet verificaElemento (void * ppElem, int* f)
 		CED_ObterTipoEspaco( pElem) ,
 		"Tipo do espaço de dados não é elemento da lista." ) != TST_CondRetOK )
 	{
-		//conta
+		
+		CNT_CONTAR("VerificaElemif0");
 		falha++;
 	}
+	else CNT_CONTAR("NaoVerificaElemTipoif0");
 	// marca o campo valor como ativo
 	CED_MarcarEspacoAtivo(pElem->pValor);
 

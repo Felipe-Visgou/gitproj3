@@ -8,6 +8,7 @@
 	OrigemListaNulo
 	TamanhoLista
 	TipoDaLista
+	TipoCabeca
 	VazamentoDaLista
 	ElemCorrNulo
 	ElemCorrValorNulo
@@ -15,7 +16,9 @@
 	ElemCorrPantNulo
 	ElemCorrPproxPvalorNulo
 	ElemCorrPantPvalorNulo
-	
+	verificaElem
+	VerificaElemif0
+
 	NaoElemCorrPproxPvalorNulo
 	NaoElemCorrPproxNulo
 	NaoElemCorrPantNulo
@@ -23,9 +26,11 @@
 	NaoElemCorrNulo
 	NaoElemCorrValorNulo
 	NaoTipoDaLista
+	NaoTipoCabeca
 	NaoTamanhoLista
 	NaoOrigemListaNulo
 	NaoVazamentoDaLista
+	NaoVerificaElemTipoif0
 
 	CriarLista
 	DestruirLista

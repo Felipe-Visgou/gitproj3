@@ -125,7 +125,10 @@ typedef struct LIS_tagLista * LIS_tppLista ;
                /* Atribui Nulo ao elemento corrente */
 
          DeturpaPtOrigemNulo        = 10 ,
-               /* Atribui nulo ao ponteiro de origem da estrutura */
+              /* Atribui nulo ao ponteiro de origem da estrutura */
+
+		  DeturpaTipoCabeca	 = 11,
+			/* Altera o tipo de espaço da cabeça de lista */
 
    } LIS_ModosDeturpacao ;
 

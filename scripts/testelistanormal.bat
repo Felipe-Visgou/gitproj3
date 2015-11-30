@@ -1,0 +1,1 @@
+TRAB4-1 /stestelistanormal > logSaidaListaNormal.txt

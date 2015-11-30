@@ -102,11 +102,10 @@
 
    static tpElemLista * CriarElemento( LIS_tppLista pLista ,
                                        void *       pValor  ) ;
-#ifdef _DEBUG
+
    LIS_tpCondRet verificaElemento (void * ppElem, int* f);
 
    int VerificaVazamentoMem(LIS_tppLista pLista);
-#endif
 
    static void LimparCabeca( LIS_tppLista pLista ) ;
 
@@ -125,10 +124,6 @@
    {
 
       LIS_tpLista * pLista = NULL ;
-
-	  #ifdef _DEBUG
-	  CNT_CONTAR( "CriarLista" ) ;
-		#endif
 
       pLista = ( LIS_tpLista * ) malloc( sizeof( LIS_tpLista )) ;
       if ( pLista == NULL )
@@ -159,9 +154,6 @@
       #ifdef _DEBUG
          assert( pLista != NULL ) ;
       #endif
-	 #ifdef _DEBUG
-	  CNT_CONTAR( "DestruirLista" ) ;
-	#endif
 
       LIS_EsvaziarLista( pLista ) ;
 
@@ -183,16 +175,10 @@
       #ifdef _DEBUG
          assert( pLista != NULL ) ;
       #endif
-		#ifdef _DEBUG
-	 CNT_CONTAR( "EsvaziarLista" ) ;
-		#endif
 
       pElem = pLista->pOrigemLista ;
       while ( pElem != NULL )
       {
-		#ifdef _DEBUG
-		 CNT_CONTAR( "EsvaziarListaWhile" ) ;
-		#endif
          pProx = pElem->pProx ;
          LiberarElemento( pLista , pElem ) ;
          pElem = pProx ;
@@ -208,66 +194,47 @@
 *  ****/
 
    LIS_tpCondRet LIS_InserirElementoAntes( LIS_tppLista pLista ,
-	   void * pValor        )
+                                           void * pValor        )
    {
 
-	   tpElemLista * pElem ;
+      tpElemLista * pElem ;
 
-#ifdef _DEBUG
-	   assert( pLista != NULL ) ;
-#endif
+      #ifdef _DEBUG
+         assert( pLista != NULL ) ;
+      #endif
 
-#ifdef _DEBUG
-	   CNT_CONTAR( "InserirElementoAntes" ) ;
-#endif
-	   /* Criar elemento a inerir antes */
+      /* Criar elemento a inerir antes */
 
-	   pElem = CriarElemento( pLista , pValor ) ;
-	   if ( pElem == NULL )
-	   {
-		   return LIS_CondRetFaltouMemoria ;
-	   } /* if */
+         pElem = CriarElemento( pLista , pValor ) ;
+         if ( pElem == NULL )
+         {
+            return LIS_CondRetFaltouMemoria ;
+         } /* if */
 
-	   /* Encadear o elemento antes do elemento corrente */
+      /* Encadear o elemento antes do elemento corrente */
 
-	   if ( pLista->pElemCorr == NULL )
-	   {
-		   pLista->pOrigemLista = pElem ;
-		   pLista->pFimLista = pElem ;
+         if ( pLista->pElemCorr == NULL )
+         {
+            pLista->pOrigemLista = pElem ;
+            pLista->pFimLista = pElem ;
+         } else
+         {
+            if ( pLista->pElemCorr->pAnt != NULL )
+            {
+               pElem->pAnt  = pLista->pElemCorr->pAnt ;
+               pLista->pElemCorr->pAnt->pProx = pElem ;
+            } else
+            {
+               pLista->pOrigemLista = pElem ;
+            } /* if */
 
-#ifdef _DEBUG
-		   CNT_CONTAR( "InserirElementoAntesif1" ) ;
-#endif
-	   } 
-	   else
-	   {
-#ifdef _DEBUG
-		   CNT_CONTAR( "InserirElementoAnteselse0" ) ;
-#endif
-		   if ( pLista->pElemCorr->pAnt != NULL )
-		   {
-			   pElem->pAnt  = pLista->pElemCorr->pAnt ;
-			   pLista->pElemCorr->pAnt->pProx = pElem ;
+            pElem->pProx = pLista->pElemCorr ;
+            pLista->pElemCorr->pAnt = pElem ;
+         } /* if */
 
-#ifdef _DEBUG
-			   CNT_CONTAR( "InserirElementoAntesif2" ) ;
-#endif
+         pLista->pElemCorr = pElem ;
 
-		   } else
-		   {
-#ifdef _DEBUG
-			   CNT_CONTAR( "InserirElementoAnteselse1" ) ;
-#endif
-			   pLista->pOrigemLista = pElem ;
-		   } /* if */
-
-		   pElem->pProx = pLista->pElemCorr ;
-		   pLista->pElemCorr->pAnt = pElem ;
-	   } /* if */
-
-	   pLista->pElemCorr = pElem ;
-
-	   return LIS_CondRetOK ;
+         return LIS_CondRetOK ;
 
    } /* Fim função: LIS  &Inserir elemento antes */
 
@@ -287,11 +254,6 @@
          assert( pLista != NULL ) ;
       #endif
 
-		 	#ifdef _DEBUG
-			CNT_CONTAR( "InserirElementoApos" ) ;
-			 #endif
-
-
       /* Criar elemento a inerir após */
 
          pElem = CriarElemento( pLista , pValor ) ;
@@ -306,26 +268,14 @@
          {
             pLista->pOrigemLista = pElem ;
             pLista->pFimLista = pElem ;
-					 	#ifdef _DEBUG
-			CNT_CONTAR( "InserirElementoAposif0" ) ;
-			 #endif
          } else
          {
-			 #ifdef _DEBUG
-			CNT_CONTAR( "InserirElementoAposelse0" ) ;
-			 #endif
             if ( pLista->pElemCorr->pProx != NULL )
             {
-			#ifdef _DEBUG
-			CNT_CONTAR( "InserirElementoAposif1" ) ;
-			 #endif
                pElem->pProx  = pLista->pElemCorr->pProx ;
                pLista->pElemCorr->pProx->pAnt = pElem ;
             } else
             {
-			#ifdef _DEBUG
-			CNT_CONTAR( "InserirElementoAposelse1" ) ;
-			 #endif
                pLista->pFimLista = pElem ;
             } /* if */
 
@@ -353,9 +303,7 @@
       #ifdef _DEBUG
          assert( pLista  != NULL ) ;
       #endif
-	  			#ifdef _DEBUG
-			CNT_CONTAR( "ExcluirElemento" ) ;
-			 #endif
+
       if ( pLista->pElemCorr == NULL )
       {
          return LIS_CondRetListaVazia ;
@@ -369,15 +317,9 @@
          {
             pElem->pAnt->pProx   = pElem->pProx ;
             pLista->pElemCorr    = pElem->pAnt ;
-			#ifdef _DEBUG
-			CNT_CONTAR( "ExcluirElementoif0" ) ;
-			 #endif
          } else {
             pLista->pElemCorr    = pElem->pProx ;
             pLista->pOrigemLista = pLista->pElemCorr ;
-			#ifdef _DEBUG
-			CNT_CONTAR( "ExcluirElementoelse0" ) ;
-			 #endif
          } /* if */
 
       /* Desencadeia à direita */
@@ -385,15 +327,9 @@
          if ( pElem->pProx != NULL )
          {
             pElem->pProx->pAnt = pElem->pAnt ;
-			#ifdef _DEBUG
-			CNT_CONTAR( "ExcluirElementoif1" ) ;
-			 #endif
          } else
          {
             pLista->pFimLista = pElem->pAnt ;
-			#ifdef _DEBUG
-			CNT_CONTAR( "ExcluirElementoelse1" ) ;
-			 #endif
          } /* if */
 
       LiberarElemento( pLista , pElem ) ;
@@ -413,10 +349,6 @@
       #ifdef _DEBUG
          assert( pLista != NULL ) ;
       #endif
-
-	  #ifdef _DEBUG
-			CNT_CONTAR( "ObterValor" ) ;
-	  #endif
 
       if ( pLista->pElemCorr == NULL )
       {
@@ -439,10 +371,6 @@
          assert( pLista != NULL ) ;
       #endif
 
-	  #ifdef _DEBUG
-			CNT_CONTAR( "IrInicioLista" ) ;
-	  #endif
-
       pLista->pElemCorr = pLista->pOrigemLista ;
 
    } /* Fim função: LIS  &Ir para o elemento inicial */
@@ -458,9 +386,6 @@
       #ifdef _DEBUG
          assert( pLista != NULL ) ;
       #endif
-	  #ifdef _DEBUG
-			CNT_CONTAR( "IrFinalLista" ) ;
-	  #endif
 
       pLista->pElemCorr = pLista->pFimLista ;
 
@@ -483,10 +408,6 @@
          assert( pLista != NULL ) ;
       #endif
 
-	 #ifdef _DEBUG
-			CNT_CONTAR( "AvancarElementoCorrente" ) ;
-	 #endif	
-
       /* Tratar lista vazia */
 
          if ( pLista->pElemCorr == NULL )
@@ -500,20 +421,12 @@
 
          if ( numElem > 0 )
          {
-	 #ifdef _DEBUG
-			CNT_CONTAR( "AvancarElementoCorrenteif0" ) ;
-	 #endif	
+
             pElem = pLista->pElemCorr ;
             for( i = numElem ; i > 0 ; i-- )
             {
-	 #ifdef _DEBUG
-			CNT_CONTAR( "AvancarElementoCorrentefor0" ) ;
-	 #endif	
                if ( pElem == NULL )
                {
-	 #ifdef _DEBUG
-			CNT_CONTAR( "AvancarElementoCorrenteif1" ) ;
-	 #endif	
                   break ;
                } /* if */
                pElem    = pElem->pProx ;
@@ -521,9 +434,6 @@
 
             if ( pElem != NULL )
             {
-	 #ifdef _DEBUG
-			CNT_CONTAR( "AvancarElementoCorrenteif2" ) ;
-	 #endif	
                pLista->pElemCorr = pElem ;
                return LIS_CondRetOK ;
             } /* if */
@@ -537,20 +447,12 @@
 
          else if ( numElem < 0 )
          {
-	 #ifdef _DEBUG
-			CNT_CONTAR( "AvancarElementoCorrenteielse0" ) ;
-	 #endif	
+
             pElem = pLista->pElemCorr ;
             for( i = numElem ; i < 0 ; i++ )
             {
-	 #ifdef _DEBUG
-			CNT_CONTAR( "AvancarElementoCorrentefor1" ) ;
-	 #endif	
                if ( pElem == NULL )
                {
-	 #ifdef _DEBUG
-			CNT_CONTAR( "AvancarElementoCorrenteif4" ) ;
-	 #endif	
                   break ;
                } /* if */
                pElem    = pElem->pAnt ;
@@ -558,9 +460,6 @@
 
             if ( pElem != NULL )
             {
-	 #ifdef _DEBUG
-			CNT_CONTAR( "AvancarElementoCorrenteif5" ) ;
-	 #endif	
                pLista->pElemCorr = pElem ;
                return LIS_CondRetOK ;
             } /* if */
@@ -600,10 +499,8 @@
             pElem != NULL ;
             pElem  = pElem->pProx )
       {
-
          if ( pElem->pValor == pValor )
          {
-
             pLista->pElemCorr = pElem ;
             return LIS_CondRetOK ;
          } /* if */
@@ -616,9 +513,6 @@
 /* Obter tamanho da lista */
 LIS_tpCondRet LIS_ObterTamanho( LIS_tppLista pLista,int * num)
    {
-	   	#ifdef _DEBUG
-			CNT_CONTAR( "ObterTamanho" ) ;
-		 #endif
 		*num = pLista->numElem;
 		return LIS_CondRetOK ;
    } /* Fim função: LIS  &Obter referência para o tamanho da lista*/
@@ -639,6 +533,7 @@ LIS_tpCondRet LIS_ObterTamanho( LIS_tppLista pLista,int * num)
    void LiberarElemento( LIS_tppLista   pLista ,
                          tpElemLista  * pElem   )
    {
+
       if ( ( pLista->ExcluirValor != NULL )
         && ( pElem->pValor != NULL        ))
       {
@@ -663,7 +558,6 @@ LIS_tpCondRet LIS_ObterTamanho( LIS_tppLista pLista,int * num)
    {
 
       tpElemLista * pElem ;
-
 
       pElem = ( tpElemLista * ) malloc( sizeof( tpElemLista )) ;
       if ( pElem == NULL )

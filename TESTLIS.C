@@ -391,7 +391,7 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
 
 						return TST_CondRetOK;
 		 }  /* Fim testar Obter Tamanho */
-
+#ifdef _DEBUG
 		 /* Testar Deturpar */
 		 else if (strcmp ( ComandoTeste , DETURPA_CMD ) == 0 )
 		 {
@@ -423,6 +423,7 @@ LIS_tppLista   vtListas[ DIM_VT_LISTA ] ;
 
 			return TST_CondRetOK;
 		 }
+#endif
 		 return TST_CondRetNaoConhec ;
 
    } /* Fim função: TLIS &Testar lista */

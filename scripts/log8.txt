@@ -4,7 +4,7 @@ LES - Laboratório de Engenharia de Software DI/PUC-Rio
       Arcabouço de teste de módulos C  (c) 2006
 
 ---------------------------------------------
-      Construto sob teste: final4
+      Construto sob teste: TRAB4-2
 
       Arquivo de teste:    testelista8
 
@@ -23,11 +23,11 @@ LES - Laboratório de Engenharia de Software DI/PUC-Rio
    55  == Deturpa DeturpaEliminaSemFree
    58  == Verifica
 
-!!!  Espaco de dados, id:     4  pValor: 00BCA62A  hexa: 2A A6 BC 00  Id ant:     5  Id suc:     3
-     Id tipo valor: 2  Tamanho: 16  Nao ativo  Linha onde alocou: 562  Arquivo: uments\modular\gitproj3\lista.c
+!!!  Espaco de dados, id:     4  pValor: 005FA92A  hexa: 2A A9 5F 00  Id ant:     5  Id suc:     3
+     Id tipo valor: 2  Tamanho: 16  Nao ativo  Linha onde alocou: 668  Arquivo: uments\modular\gitproj3\lista.c
      Controle antes OK  Controle apos OK
           0  1  2  3  4  5  6  7  8  9  A  B  C  D  E  F   0123456789ABCDEF
-    000  E2 A1 BC 00 00 B9 BC 00 3A A7 BC 00 1A A5 BC 00   â¡¼..¹¼.:§¼..¥¼.
+    000  E2 A4 5F 00 10 E5 5F 00 3A AA 5F 00 1A A8 5F 00   â¤_..å_.:ª_..¨_.
 
 >>>    1  Linha:    59  Houve vazamento de memoria 
 <<<    0  Linha:    60  Falhas registradas eram esperadas e foram recuperadas. 

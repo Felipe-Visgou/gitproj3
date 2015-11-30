@@ -1,1 +1,1 @@
-final4 /stestelista7 > log7.txt
+TRAB4-2 /stestelista7 > log7.txt

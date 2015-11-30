@@ -1,0 +1,1 @@
+TRAB4-2 /stestelistainstrum > logSaidaListaInstrum.txt

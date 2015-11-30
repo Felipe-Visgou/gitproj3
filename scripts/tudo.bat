@@ -1,3 +1,4 @@
+call testelistainstrum
 call teste1
 call teste2
 call teste3

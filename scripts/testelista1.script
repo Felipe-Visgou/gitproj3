@@ -30,9 +30,11 @@
 =declararparm   DeturpaPtCorrNulo       int  9
 =declararparm   DeturpaPtOrigemNulo		int  10
 
-=inicializarcontadores  ""
+== Inicializar contadores
+=inicializarcontadores  "acumulador"
 =lercontadores          "Lista"
 =iniciarcontagem
+
 
 //_________________________________________ 1>>
 

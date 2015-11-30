@@ -26,3 +26,36 @@
 	NaoTamanhoLista
 	NaoOrigemListaNulo
 	NaoVazamentoDaLista
+
+	CriarLista
+	DestruirLista
+	EsvaziarLista
+	EsvaziarListaWhile
+	InserirElementoAntes
+	InserirElementoAntesif1
+	InserirElementoAntesif2
+	InserirElementoAnteselse0
+	InserirElementoAnteselse1
+	InserirElementoApos
+	InserirElementoAposif0
+	InserirElementoAposif1
+	InserirElementoAposelse0
+	InserirElementoAposelse1
+	ExcluirElemento
+	ExcluirElementoif0
+	ExcluirElementoif1
+	ExcluirElementoelse0
+	ExcluirElementoelse1
+	ObterValor
+	IrInicioLista
+	IrFinalLista
+	AvancarElementoCorrente
+	AvancarElementoCorrentefor0
+	AvancarElementoCorrenteif0
+	AvancarElementoCorrenteif1
+	AvancarElementoCorrenteif2
+	AvancarElementoCorrenteielse0
+	AvancarElementoCorrentefor1
+	AvancarElementoCorrenteif4
+	AvancarElementoCorrenteif5
+	ObterTamanho

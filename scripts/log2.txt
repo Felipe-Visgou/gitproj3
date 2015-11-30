@@ -4,7 +4,7 @@ LES - Laboratório de Engenharia de Software DI/PUC-Rio
       Arcabouço de teste de módulos C  (c) 2006
 
 ---------------------------------------------
-      Construto sob teste: final4
+      Construto sob teste: TRAB4-2
 
       Arquivo de teste:    testelista2
 
